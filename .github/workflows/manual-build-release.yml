@@ -30,11 +30,11 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Build fonts skipping overlap removal
+    - name: Build fonts with debug mode
       run: |
         mkdir -p output
         PKG=$(find sources -name "*.glyphspackage" | head -n 1)
-        UFO2FT_NO_REMOVE_OVERLAPS=1 fontmake -g "$PKG" -o otf -o ttf --output-dir output
+        fontmake -g "$PKG" -o otf -o ttf --output-dir output --keep-overlaps --verbose DEBUG
     
     - name: Create GitHub release and upload fonts
       uses: softprops/action-gh-release@v2
