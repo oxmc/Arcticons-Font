@@ -30,19 +30,11 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Build fonts from .glyphspackage
+    - name: Build fonts skipping overlap removal
       run: |
         mkdir -p output
         PKG=$(find sources -name "*.glyphspackage" | head -n 1)
-        if [ -z "$PKG" ]; then
-          echo "No .glyphspackage found in sources/. Aborting."
-          exit 1
-        fi
-        echo "Using $PKG"
-    
-        fontmake -g "$PKG" -o otf --output-dir output
-        fontmake -g "$PKG" -o ttf --output-dir output
-        fontmake -g "$PKG" -o variable --output-dir output
+        UFO2FT_NO_REMOVE_OVERLAPS=1 fontmake -g "$PKG" -o otf -o ttf --output-dir output
     
     - name: Create GitHub release and upload fonts
       uses: softprops/action-gh-release@v2
