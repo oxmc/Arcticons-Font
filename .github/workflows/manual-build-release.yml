@@ -30,15 +30,19 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Build fonts from .glyphs
+    - name: Build fonts from .glyphspackage
       run: |
         mkdir -p output
-        GLYPHS_FILE=$(find sources -name "*.glyphs" | head -n 1)
-        echo "Using $GLYPHS_FILE"
-        fontmake -g "$GLYPHS_FILE" -o otf -o ttf --output-dir output
+        PKG=$(find sources -name "*.glyphspackage" | head -n 1)
+        if [ -z "$PKG" ]; then
+          echo "No .glyphspackage found in sources/. Aborting."
+          exit 1
+        fi
+        echo "Using $PKG"
+        fontmake -g "$PKG" -o otf -o ttf --output-dir output
 
     - name: Create GitHub release and upload fonts
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v4
       with:
         tag_name: ${{ inputs.tag }}
         name: Release ${{ inputs.tag }}
