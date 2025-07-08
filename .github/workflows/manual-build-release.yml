@@ -39,13 +39,11 @@ jobs:
           exit 1
         fi
         echo "Using $PKG"
-
-        # Build all instance OTF and TTF fonts, fixing overlaps
-        fontmake -g "$PKG" -o otf --output-dir output --fix-overlaps
-        fontmake -g "$PKG" -o ttf --output-dir output --fix-overlaps
-
-        # Build variable font (OTF)
-        fontmake -g "$PKG" -o variable --output-dir output --fix-overlaps
+    
+        # Build without overlap removal to avoid errors
+        fontmake -g "$PKG" -o otf --output-dir output --filter "- ufo2ft.filters.RemoveOverlapsFilter"
+        fontmake -g "$PKG" -o ttf --output-dir output --filter "- ufo2ft.filters.RemoveOverlapsFilter"
+        fontmake -g "$PKG" -o variable --output-dir output --filter "- ufo2ft.filters.RemoveOverlapsFilter"
 
     - name: Create GitHub release and upload fonts
       uses: softprops/action-gh-release@v2
