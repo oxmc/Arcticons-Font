@@ -40,9 +40,9 @@ jobs:
         fi
         echo "Using $PKG"
     
-        fontmake -g "$PKG" -o otf --output-dir output --filter ufo2ft.filters.RemoveOverlapsFilter
-        fontmake -g "$PKG" -o ttf --output-dir output --filter ufo2ft.filters.RemoveOverlapsFilter
-        fontmake -g "$PKG" -o variable --output-dir output --filter ufo2ft.filters.RemoveOverlapsFilter
+        fontmake -g "$PKG" -o otf --output-dir output
+        fontmake -g "$PKG" -o ttf --output-dir output
+        fontmake -g "$PKG" -o variable --output-dir output
     
     - name: Create GitHub release and upload fonts
       uses: softprops/action-gh-release@v2
